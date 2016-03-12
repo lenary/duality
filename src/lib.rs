@@ -1,6 +1,6 @@
 
 use std::fmt;
-use std::ops::{Add, Div, Mul, Neg, Sub};
+use std::ops::{Add, Sub, Neg, Mul, Div};
 
 extern crate num;
 use num::{Float, Zero, One};
