@@ -3,7 +3,7 @@ use std::fmt;
 use std::ops::{Add, Div, Mul, Neg, Sub};
 
 extern crate num;
-use num::{Num, Float, Zero, One};
+use num::{Float, Zero, One};
 
 #[cfg(test)]
 use std::f32::consts;
@@ -13,14 +13,14 @@ use std::f32;
 /// Dual Numbers
 #[derive(Copy, Clone, PartialEq, Hash, Debug)]
 pub struct Dual<F> {
-    pub real: F,
-    pub dual: F,
+    real: F,
+    dual: F,
 }
 
 pub type Dual32 = Dual<f32>;
 pub type Dual64 = Dual<f64>;
 
-impl<F: Copy + Num> Dual<F> {
+impl<F: Copy + Float> Dual<F> {
     pub fn new(real: F, deriv: F) -> Dual<F> {
         Dual {
             real: real,
@@ -28,12 +28,16 @@ impl<F: Copy + Num> Dual<F> {
         }
     }
 
+    pub fn real(self) -> F {
+        self.real
+    }
+
     pub fn derivative(self) -> F {
         self.dual
     }
 }
 
-impl<F: Copy + Num> Zero for Dual<F> {
+impl<F: Copy + Float> Zero for Dual<F> {
     fn zero() -> Dual<F> {
         Dual::new(F::zero(), F::zero())
     }
@@ -43,13 +47,13 @@ impl<F: Copy + Num> Zero for Dual<F> {
     }
 }
 
-impl<F: Copy + Num> One for Dual<F> {
+impl<F: Copy + Float> One for Dual<F> {
     fn one() -> Dual<F> {
         Dual::new(One::one(), One::one())
     }
 }
 
-impl<F: Copy + Num> Add<Dual<F>> for Dual<F> {
+impl<F: Copy + Float> Add<Dual<F>> for Dual<F> {
     type Output = Dual<F>;
 
     fn add(self, other: Dual<F>) -> Dual<F> {
@@ -67,7 +71,7 @@ fn test_add_struct() {
     assert!(z.dual == 7.0);
 }
 
-impl<F: Copy + Num> Sub<Dual<F>> for Dual<F> {
+impl<F: Copy + Float> Sub<Dual<F>> for Dual<F> {
     type Output = Dual<F>;
 
     fn sub(self, other: Dual<F>) -> Dual<F> {
@@ -85,7 +89,7 @@ fn test_sub() {
     assert!(z.dual == -8.0);
 }
 
-impl<F: Copy + Num + Neg<Output = F>> Neg for Dual<F> {
+impl<F: Copy + Float + Neg<Output = F>> Neg for Dual<F> {
     type Output = Dual<F>;
 
     fn neg(self) -> Dual<F> {
@@ -113,7 +117,7 @@ fn test_neg_zero() {
     assert!(z1 == z2);
 }
 
-impl<F: Copy + Num> Mul<Dual<F>> for Dual<F> {
+impl<F: Copy + Float> Mul<Dual<F>> for Dual<F> {
     type Output = Dual<F>;
 
     fn mul(self, other: Dual<F>) -> Dual<F> {
@@ -132,7 +136,7 @@ fn test_mul() {
     assert!(z.dual == 10.0);
 }
 
-impl<F: Copy + Num> Div<Dual<F>> for Dual<F> {
+impl<F: Copy + Float> Div<Dual<F>> for Dual<F> {
     type Output = Dual<F>;
 
     fn div(self, other: Dual<F>) -> Dual<F> {
@@ -178,14 +182,14 @@ impl<F: Copy + Float> Dual<F> {
     }
 }
 
-impl<F: Copy + Num> From<F> for Dual<F> {
+impl<F: Copy + Float> From<F> for Dual<F> {
     fn from(real: F) -> Dual<F> {
         Dual::new(real, F::one())
     }
 }
 
 impl<F> fmt::Display for Dual<F>
-    where F: fmt::Display + Num + PartialOrd + Copy
+    where F: fmt::Display + Float + PartialOrd + Copy
 {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         if self.real < Zero::zero() {
