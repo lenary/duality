@@ -1,0 +1,6 @@
+[package]
+name = "duality"
+version = "0.1.0"
+authors = ["Sam Elliott <sam@lenary.co.uk>"]
+
+[dependencies]
