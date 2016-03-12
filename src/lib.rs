@@ -227,6 +227,18 @@ fn test_cos() {
 }
 
 #[test]
+fn test_tan() {
+    let x: Dual32 = From::from(0.0);
+    let y = x.tan();
+
+    let real_diff = diff(y.real, 0.0);
+    let dual_diff = diff(y.dual, 1.0);
+
+    assert!(real_diff < f32::EPSILON);
+    assert!(dual_diff < f32::EPSILON);
+}
+
+#[test]
 fn test_exp() {
     let x: Dual32 = From::from(1.0);
     let y = x.exp();
