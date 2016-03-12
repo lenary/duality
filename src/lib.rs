@@ -174,8 +174,7 @@ impl<F: Copy + Float> Dual<F> {
 
     pub fn sqrt(self) -> Dual<F> {
         let two = F::one() + F::one();
-        Dual::new(self.real.sqrt(),
-                  self.dual / (two * self.real.sqrt()))
+        Dual::new(self.real.sqrt(), self.dual / (two * self.real.sqrt()))
     }
 }
 
@@ -198,7 +197,7 @@ impl<F> fmt::Display for Dual<F>
 }
 
 #[cfg(test)]
-fn diff(x : f32, y : f32) -> f32 {
+fn diff(x: f32, y: f32) -> f32 {
     (x - y).abs()
 }
 
