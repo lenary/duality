@@ -189,7 +189,7 @@ impl<F: Copy + Float> From<F> for Dual<F> {
 }
 
 impl<F> fmt::Display for Dual<F>
-    where F: fmt::Display + Float + PartialOrd + Copy
+    where F: Copy + Float + fmt::Display
 {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         if self.real < Zero::zero() {
